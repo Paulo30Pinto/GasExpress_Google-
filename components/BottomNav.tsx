@@ -6,6 +6,7 @@ interface BottomNavProps {
   cartCount: number;
   notificationCount: number;
   onNavigate: (screen: Screen) => void;
+  activeScreen: Screen;
 }
 
 const NavItem: React.FC<{ icon: React.ReactNode; label: string; count?: number; isActive?: boolean; onClick: () => void; }> = ({ icon, label, count, isActive, onClick }) => (
@@ -22,31 +23,34 @@ const NavItem: React.FC<{ icon: React.ReactNode; label: string; count?: number; 
   </button>
 );
 
-const BottomNav: React.FC<BottomNavProps> = ({ cartCount, notificationCount, onNavigate }) => {
+const BottomNav: React.FC<BottomNavProps> = ({ cartCount, notificationCount, onNavigate, activeScreen }) => {
   return (
     <footer className="fixed bottom-0 left-0 right-0 h-16 bg-orange-500 shadow-t-lg z-50 max-w-md mx-auto rounded-t-2xl">
       <div className="flex items-center justify-around h-full">
         <NavItem 
             icon={<HomeIcon className="w-6 h-6" />} 
             label="Home"
-            isActive={true}
+            isActive={activeScreen === Screen.Home}
             onClick={() => onNavigate(Screen.Home)}
         />
         <NavItem 
             icon={<CartIcon className="w-6 h-6" />} 
             label="Carrinho"
             count={cartCount}
-            onClick={() => alert('Carrinho clicked')}
+            isActive={activeScreen === Screen.Cart}
+            onClick={() => onNavigate(Screen.Cart)}
         />
         <NavItem 
             icon={<NotificationIcon className="w-6 h-6" />} 
             label="Notificações"
             count={notificationCount}
+            isActive={false} // Update when notifications screen is added
             onClick={() => alert('Notificações clicked')}
         />
         <NavItem 
             icon={<ProfileIcon className="w-6 h-6" />} 
             label="Perfil"
+            isActive={false} // Update when profile screen is added
             onClick={() => alert('Perfil clicked')}
         />
       </div>

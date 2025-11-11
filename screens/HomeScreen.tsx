@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Screen } from '../types';
 import FlameIcon from '../components/FlameIcon';
 import BottomNav from '../components/BottomNav';
 import { CompassIcon, AddToCartIcon } from '../components/Icons';
+import type { CartItem } from '../App';
 
 interface HomeScreenProps {
   onNavigate: (screen: Screen) => void;
+  onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
+  cartCount: number;
+  activeScreen: Screen;
 }
 
 const productData = [
-  { id: 1, name: 'Aço 6KG', price: '750.00 AOA', identifier: 'botija_pequena', image: 'https://vale-luanhi.com/images/levita11.png' },
-  { id: 2, name: 'Aço 12KG', price: '1800.00 AOA', identifier: 'botija_media', image: 'https://vale-luanhi.com/images/bottle_site.png' },
-  { id: 3, name: 'Aço 51KG', price: '6100.00 AOA', identifier: 'botija_grande', image: 'https://vale-luanhi.com/images/botija51.png' },
-  { id: 4, name: 'Mangueira Especial', price: '1000.00 AOA', identifier: 'mangueira', image: 'https://www.go-system.co.uk/cdn/shop/products/a59089c5-2fbc-4bb2-932a-d9bdf32fede9_800x.jpg?v=1616753397' },
+  { id: 1, name: 'Aço 6KG', price: 750.00, identifier: 'botija_pequena', image: 'https://vale-luanhi.com/images/levita11.png', color: '#D1D5DB' },
+  { id: 2, name: 'Aço 12KG', price: 1800.00, identifier: 'botija_media', image: 'https://vale-luanhi.com/images/bottle_site.png', color: '#D1D5DB' },
+  { id: 3, name: 'Aço 51KG', price: 6100.00, identifier: 'botija_grande', image: 'https://vale-luanhi.com/images/botija51.png', color: '#D1D5DB' },
+  { id: 4, name: 'Mangueira Especial', price: 1000.00, identifier: 'mangueira', image: 'https://www.go-system.co.uk/cdn/shop/products/a59089c5-2fbc-4bb2-932a-d9bdf32fede9_800x.jpg?v=1616753397', color: '#D1D5DB' },
 ];
 
 const categories = [
@@ -29,7 +33,7 @@ const ProductCard: React.FC<{ product: typeof productData[0]; onAdd: () => void 
     </div>
     <div className="flex-grow">
       <h3 className="font-bold text-gray-800">{product.name}</h3>
-      <p className="text-sm font-semibold text-gray-600">{product.price}</p>
+      <p className="text-sm font-semibold text-gray-600">{product.price.toFixed(2)} AOA</p>
       <p className="text-xs text-gray-400">{product.identifier}</p>
     </div>
     <div className="mt-2">
@@ -42,12 +46,7 @@ const ProductCard: React.FC<{ product: typeof productData[0]; onAdd: () => void 
 );
 
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
-  const [cartCount, setCartCount] = useState(0);
-
-  const handleAddToCart = () => {
-    setCartCount(prev => prev + 1);
-  };
+const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, onAddToCart, cartCount, activeScreen }) => {
 
   return (
     <div className="bg-gray-100 min-h-screen pb-20">
@@ -75,7 +74,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
               Ultimas ofertas
             </button>
           </div>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQI5_BKObF6Ing4FVxmqLTP3PGv20lYixweByeeoMeBn9nVO8ms1D1HPD6zIgI5y_mN9I&usqp=CAU" alt="Botijas" className="absolute -right-8 -bottom-4 w-48 opacity-90 z-0" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:AN_d3GcSQI5_BKObF6Ing4FVxmqLTP3PGv20lYixweByeeoMeBn9nVO8ms1D1HPD6zIgI5y_mN9I&usqp=CAU" alt="Botijas" className="absolute -right-8 -bottom-4 w-48 opacity-90 z-0" />
         </div>
       </section>
 
@@ -95,12 +94,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
       <main className="px-4">
         <div className="grid grid-cols-2 gap-4">
           {productData.map(product => (
-            <ProductCard key={product.id} product={product} onAdd={handleAddToCart} />
+            <ProductCard key={product.id} product={product} onAdd={() => onAddToCart(product)} />
           ))}
         </div>
       </main>
 
-      <BottomNav cartCount={cartCount} notificationCount={0} onNavigate={onNavigate} />
+      <BottomNav cartCount={cartCount} notificationCount={0} onNavigate={onNavigate} activeScreen={activeScreen} />
     </div>
   );
 };

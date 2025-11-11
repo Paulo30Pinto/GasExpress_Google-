@@ -3,6 +3,7 @@ export enum Screen {
   Login,
   SignUp,
   Home,
+  Cart,
 }
 
 export enum UserRole {
