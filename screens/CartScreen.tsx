@@ -13,6 +13,7 @@ interface CartScreenProps {
   onRemoveFromCart: (productId: number) => void;
   onNavigate: (screen: Screen) => void;
   activeScreen: Screen;
+  notificationCount: number;
 }
 
 const CartItemCard: React.FC<{ item: CartItem; onUpdate: (id: number, qty: number) => void; onRemove: (id: number) => void; }> = ({ item, onUpdate, onRemove }) => {
@@ -44,7 +45,7 @@ const CartItemCard: React.FC<{ item: CartItem; onUpdate: (id: number, qty: numbe
 };
 
 
-const CartScreen: React.FC<CartScreenProps> = ({ cart, onUpdateQuantity, onRemoveFromCart, onNavigate, activeScreen }) => {
+const CartScreen: React.FC<CartScreenProps> = ({ cart, onUpdateQuantity, onRemoveFromCart, onNavigate, activeScreen, notificationCount }) => {
   const cartItemCount = useMemo(() => cart.reduce((sum, item) => sum + item.quantity, 0), [cart]);
 
   const { subtotal, delivery, iva, total } = useMemo(() => {
@@ -120,7 +121,7 @@ const CartScreen: React.FC<CartScreenProps> = ({ cart, onUpdateQuantity, onRemov
         </div>
       </div>
       
-      <BottomNav cartCount={cartItemCount} notificationCount={0} onNavigate={onNavigate} activeScreen={activeScreen} />
+      <BottomNav cartCount={cartItemCount} notificationCount={notificationCount} onNavigate={onNavigate} activeScreen={activeScreen} />
     </div>
   );
 };

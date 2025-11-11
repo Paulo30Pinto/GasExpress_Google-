@@ -44,14 +44,14 @@ const BottomNav: React.FC<BottomNavProps> = ({ cartCount, notificationCount, onN
             icon={<NotificationIcon className="w-6 h-6" />} 
             label="Notificações"
             count={notificationCount}
-            isActive={false} // Update when notifications screen is added
-            onClick={() => alert('Notificações clicked')}
+            isActive={activeScreen === Screen.Notifications}
+            onClick={() => onNavigate(Screen.Notifications)}
         />
         <NavItem 
             icon={<ProfileIcon className="w-6 h-6" />} 
             label="Perfil"
-            isActive={false} // Update when profile screen is added
-            onClick={() => alert('Perfil clicked')}
+            isActive={activeScreen === Screen.Profile}
+            onClick={() => onNavigate(Screen.Profile)}
         />
       </div>
     </footer>

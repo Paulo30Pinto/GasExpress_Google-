@@ -4,6 +4,8 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import { Screen } from './types';
 import type { UserRole } from './types';
 
@@ -16,11 +18,28 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface Notification {
+  id: number;
+  type: 'location' | 'user';
+  text: string;
+  action: 'star' | 'heart';
+}
+
+const initialNotifications: Notification[] = [
+    { id: 1, type: 'location', text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipson', action: 'star' },
+    { id: 2, type: 'user', text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipson', action: 'heart' },
+    { id: 3, type: 'location', text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipson', action: 'star' },
+];
+
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>(Screen.Welcome);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
 
   const navigateTo = useCallback((screen: Screen) => {
+    if (screen === Screen.Welcome) {
+      setCart([]); // Reset cart on logout
+    }
     setCurrentScreen(screen);
   }, []);
 
@@ -57,6 +76,7 @@ const App: React.FC = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   }, [cart]);
 
+  const notificationCount = useMemo(() => notifications.length, [notifications]);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -69,6 +89,7 @@ const App: React.FC = () => {
           onNavigate={navigateTo} 
           onAddToCart={handleAddToCart}
           cartCount={cartItemCount}
+          notificationCount={notificationCount}
           activeScreen={currentScreen}
         />;
       case Screen.Cart:
@@ -77,6 +98,22 @@ const App: React.FC = () => {
           onUpdateQuantity={handleUpdateQuantity}
           onRemoveFromCart={handleRemoveFromCart}
           onNavigate={navigateTo}
+          notificationCount={notificationCount}
+          activeScreen={currentScreen}
+        />;
+      case Screen.Notifications:
+        return <NotificationsScreen
+          notifications={notifications}
+          onNavigate={navigateTo}
+          cartCount={cartItemCount}
+          notificationCount={notificationCount}
+          activeScreen={currentScreen}
+        />;
+       case Screen.Profile:
+        return <ProfileScreen
+          onNavigate={navigateTo}
+          cartCount={cartItemCount}
+          notificationCount={notificationCount}
           activeScreen={currentScreen}
         />;
       case Screen.Welcome:

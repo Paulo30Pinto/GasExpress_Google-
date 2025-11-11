@@ -9,6 +9,7 @@ interface HomeScreenProps {
   onNavigate: (screen: Screen) => void;
   onAddToCart: (product: Omit<CartItem, 'quantity'>) => void;
   cartCount: number;
+  notificationCount: number;
   activeScreen: Screen;
 }
 
@@ -46,7 +47,7 @@ const ProductCard: React.FC<{ product: typeof productData[0]; onAdd: () => void 
 );
 
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, onAddToCart, cartCount, activeScreen }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, onAddToCart, cartCount, notificationCount, activeScreen }) => {
 
   return (
     <div className="bg-gray-100 min-h-screen pb-20">
@@ -99,7 +100,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate, onAddToCart, cartCo
         </div>
       </main>
 
-      <BottomNav cartCount={cartCount} notificationCount={0} onNavigate={onNavigate} activeScreen={activeScreen} />
+      <BottomNav cartCount={cartCount} notificationCount={notificationCount} onNavigate={onNavigate} activeScreen={activeScreen} />
     </div>
   );
 };

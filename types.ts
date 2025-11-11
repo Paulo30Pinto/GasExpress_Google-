@@ -4,6 +4,8 @@ export enum Screen {
   SignUp,
   Home,
   Cart,
+  Notifications,
+  Profile,
 }
 
 export enum UserRole {
