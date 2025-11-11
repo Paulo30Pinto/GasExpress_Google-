@@ -1,0 +1,5 @@
+{
+  "name": "App de Vendas",
+  "description": "Uma aplicação PWA com autenticação e uma tela inicial para clientes visualizarem e adicionarem produtos ao carrinho. Construída com React e TailwindCSS.",
+  "requestFramePermissions": []
+}
